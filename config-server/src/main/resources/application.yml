@@ -1,0 +1,14 @@
+server:
+  port: 9181
+
+spring:
+  application:
+    name: CONFIG-SERVER
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/shabbirdwd53/config-server
+          skipSslValidation: true
+          default-label: main
+          clone-on-start: true
