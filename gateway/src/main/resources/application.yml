@@ -1,0 +1,36 @@
+server:
+  port: 8118
+
+spring:
+  application:
+    name: GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: VACCINE-SERVICE
+          uri: lb://VACCINE-SERVICE
+          predicates:
+            - Path=/vaccine/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: VACCINE-SERVICE
+                fallbackuri: forward:/vaccineServiceFallBack
+        - id: CITIZEN-SERVICE
+          uri: lb://CITIZEN-SERVICE
+          predicates:
+            - Path=/citizen/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: CITIZEN-SERVICE
+                fallbackuri: forward:/citizenServiceFallBack
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8090/eureka/
+  instance:
+    hostname: localhost
